@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Button plus;
     Button minus;
     ToggleButton tgButton;
-    ImageView img;
+    MyView myView;
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private boolean accelSopported;
@@ -36,29 +36,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         plus=(Button)findViewById(R.id.plus);
         minus=(Button)findViewById(R.id.minus);
         tgButton=(ToggleButton)findViewById(R.id.tgButton);
-        img=(ImageView)findViewById(R.id.imgView);
+        myView=(MyView)findViewById(R.id.myView);
 
         mSensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer=mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         accelSopported=mSensorManager.registerListener(this,mAccelerometer,SensorManager.SENSOR_DELAY_NORMAL);
     }
 
-    public void drawBall(){
-        Bitmap b = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-        Paint paint= new Paint();
-        paint.setAntiAlias(true);
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
-        int cheight=c.getHeight();
-        int cwidth=c.getWidth();
-        c.drawCircle(cheight/2,cwidth/2,10,paint);
-        img.setImageBitmap(b);
-    }
-
-    public void move(View v){
-
-    }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -74,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                 xAngle *= 180.00;   yAngle *= 180.00;   zAngle *= 180.00;
                 xAngle /= 3.141592; yAngle /= 3.141592; zAngle /= 3.141592;
-                Log.d("sensor",""+xAngle+"  "+yAngle+"  "+zAngle);
+                //Log.d("sensor",""+xAngle+"  "+yAngle+"  "+zAngle);
                 break;
             default:
                 break;
@@ -90,4 +74,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mSensorManager.unregisterListener(this, mAccelerometer);
         super.onPause();
     }
+
+    public void move(View v){
+        int curX=myView.getMyX();
+        int curY=myView.getMyY();
+        myView.setMyX(curX+5);
+        myView.setMyY(curY+5);
+        myView.invalidate();
+    }
+
 }

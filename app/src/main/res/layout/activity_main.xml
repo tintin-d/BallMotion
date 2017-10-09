@@ -12,10 +12,11 @@
         android:layout_alignParentTop="true"
         >
 
-        <ImageView
+        <com.example.valentin.ballmotion.MyView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/imgView"/>
+            android:id="@+id/myView"
+            />
 
     </LinearLayout>
 
@@ -33,7 +34,7 @@
             android:textOn="ON"
             android:textOff="OFF"
             android:id="@+id/tgButton"
-
+            android:onClick="move"
             />
     </LinearLayout>
 
