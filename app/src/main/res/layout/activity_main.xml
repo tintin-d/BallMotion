@@ -50,13 +50,14 @@
             android:layout_height="wrap_content"
             android:text="+"
             android:id="@+id/plus"
+            android:onClick="plusClick"
             />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-"
             android:id="@+id/minus"
-
+            android:onClick="minusClick"
             />
 
     </LinearLayout>

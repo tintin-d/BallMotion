@@ -17,8 +17,8 @@ import android.view.View;
 public class MyView extends View {
 
     private Paint paint;
-    public int x;
-    public int y;
+    public float x;
+    public float y;
 
     public MyView(Context context) {
         super(context);
@@ -36,19 +36,19 @@ public class MyView extends View {
     }
 
 
-    public int getMyX() {
+    public float getMyX() {
         return x;
     }
 
-    public int getMyY() {
+    public float getMyY() {
         return y;
     }
 
-    public void setMyX(int x) {
+    public void setMyX(float x) {
         this.x = x;
     }
 
-    public void setMyY(int y) {
+    public void setMyY(float y) {
         this.y = y;
     }
 
@@ -62,7 +62,6 @@ public class MyView extends View {
         int cheight=canvas.getHeight();
         int cwidth=canvas.getWidth();
         canvas.drawCircle(x,y,20,paint);
-        Log.d("passage","ici");
     }
 
 }

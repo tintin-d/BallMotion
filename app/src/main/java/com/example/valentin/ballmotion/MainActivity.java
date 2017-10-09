@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private boolean accelSopported;
+    public float speedX;
+    public float speedY;
+    public int coefacc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mSensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer=mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         accelSopported=mSensorManager.registerListener(this,mAccelerometer,SensorManager.SENSOR_DELAY_NORMAL);
+        speedX=speedY=1;
+        coefacc=1;
     }
 
 
@@ -58,7 +63,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                 xAngle *= 180.00;   yAngle *= 180.00;   zAngle *= 180.00;
                 xAngle /= 3.141592; yAngle /= 3.141592; zAngle /= 3.141592;
-                //Log.d("sensor",""+xAngle+"  "+yAngle+"  "+zAngle);
+                speedX=-(float)(xAngle/10);
+                speedY=(float)(yAngle/10);
+                Log.d("sensor",""+xAngle+"  "+yAngle+"  "+zAngle);
                 break;
             default:
                 break;
@@ -76,11 +83,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void move(View v){
-        int curX=myView.getMyX();
-        int curY=myView.getMyY();
-        myView.setMyX(curX+5);
-        myView.setMyY(curY+5);
-        myView.invalidate();
+        //boucle infini pas bon pour tel...
+        if(tgButton.isChecked()){
+            float curX=myView.getMyX();
+            float curY=myView.getMyY();
+            myView.setMyX(curX+speedX*1*coefacc);
+            myView.setMyY(curY+speedY*1*coefacc);
+            myView.invalidate();
+        }
     }
 
+    public void plusClick(View v){coefacc*=2;}
+    public void minusClick(View v){coefacc/=2;}
 }
