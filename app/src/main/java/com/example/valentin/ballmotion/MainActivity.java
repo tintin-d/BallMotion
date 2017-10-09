@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 float ay = sensorEvent.values[1];
                 float az = sensorEvent.values[2];
                 double xAngle = Math.atan( ax / (Math.sqrt((ay*ay) + (az*az))));
-                double yAngle = Math.atan( ay / (Math.sqrt((ax*az) + (az*az))));
+                double yAngle = Math.atan( ay / (Math.sqrt((ax*ax) + (az*az))));
                 double zAngle = Math.atan( Math.sqrt(ax*ax+ay*ay) / az);
 
                 xAngle *= 180.00;   yAngle *= 180.00;   zAngle *= 180.00;
