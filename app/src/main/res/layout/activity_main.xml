@@ -34,7 +34,6 @@
             android:textOn="ON"
             android:textOff="OFF"
             android:id="@+id/tgButton"
-            android:onClick="move"
             />
     </LinearLayout>
 

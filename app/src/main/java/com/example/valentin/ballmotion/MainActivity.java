@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private boolean accelSopported;
     public float speedX;
     public float speedY;
-    public int coefacc;
+    public float coefacc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         mSensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer=mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        accelSopported=mSensorManager.registerListener(this,mAccelerometer,SensorManager.SENSOR_DELAY_NORMAL);
+        accelSopported=mSensorManager.registerListener(this,mAccelerometer,SensorManager.SENSOR_DELAY_GAME);
         speedX=speedY=1;
         coefacc=1;
     }
@@ -59,13 +60,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 float az = sensorEvent.values[2];
                 double xAngle = Math.atan( ax / (Math.sqrt((ay*ay) + (az*az))));
                 double yAngle = Math.atan( ay / (Math.sqrt((ax*ax) + (az*az))));
-                double zAngle = Math.atan( Math.sqrt(ax*ax+ay*ay) / az);
 
-                xAngle *= 180.00;   yAngle *= 180.00;   zAngle *= 180.00;
-                xAngle /= 3.141592; yAngle /= 3.141592; zAngle /= 3.141592;
+                xAngle *= 180.00;   yAngle *= 180.00;
+                xAngle /= 3.141592; yAngle /= 3.141592;
                 speedX=-(float)(xAngle/10);
                 speedY=(float)(yAngle/10);
-                Log.d("sensor",""+xAngle+"  "+yAngle+"  "+zAngle);
+                if(tgButton.isChecked()){
+                  move();
+                }
                 break;
             default:
                 break;
@@ -79,20 +81,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onPause(){
         mSensorManager.unregisterListener(this, mAccelerometer);
+        myView.stop(null);
         super.onPause();
     }
 
-    public void move(View v){
-        //boucle infini pas bon pour tel...
-        if(tgButton.isChecked()){
-            float curX=myView.getMyX();
-            float curY=myView.getMyY();
-            myView.setMyX(curX+speedX*1*coefacc);
-            myView.setMyY(curY+speedY*1*coefacc);
-            myView.invalidate();
-        }
+    public void move(){
+
+        float curX=myView.getMyX();
+        float curY=myView.getMyY();
+        myView.setMyX(curX+speedX*1*coefacc);
+        myView.setMyY(curY+speedY*1*coefacc);
+        myView.invalidate();
+
     }
 
-    public void plusClick(View v){coefacc*=2;}
-    public void minusClick(View v){coefacc/=2;}
+    public void plusClick(View v){coefacc*=1.25;}
+    public void minusClick(View v){coefacc=(float)(coefacc/1.25);}
+
+    @Override
+    public void onDestroy(){
+        myView.stop(null);
+        super.onDestroy();
+    }
 }
